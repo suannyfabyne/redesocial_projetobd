@@ -1,0 +1,102 @@
+CREATE TABLE Usuarios (
+    codUser int not null AUTO_INCREMENT,
+    
+    nomeUser varchar(250),
+    emailUser varchar(250),
+    senhaUser varchar(250),
+    fotoUser varchar(250),
+	nascUser varchar(250),
+    generoUser varchar(250),
+    relacionamentoUser varchar(250),
+    cidadeUser varchar(250),
+    PRIMARY KEY (codUser)
+    
+    
+    
+);
+
+CREATE TABLE Murais(
+	codMurais int not null AUTO_INCREMENT,
+	codUser int not null,
+    	codGrupo int not null,
+    PRIMARY KEY(codMurais),
+    FOREIGN KEY (codUser) REFERENCES Usuarios(codUser),
+    FOREIGN KEY (codGrupo) REFERENCES Grupos(codGrupo) 
+);
+
+CREATE TABLE Amizades(
+    codUser int not null,
+    codUserAmigo int not null, 
+    
+    PRIMARY KEY (codUser, codUserAmigo),
+    FOREIGN KEY (codUser) REFERENCES Usuarios(codUser),
+    FOREIGN KEY (codUserAmigo) REFERENCES Usuarios(codUser)  
+    
+    );
+
+CREATE TABLE Bloqueios(
+    codUser int not null,
+    codUserBloqueio int not null, 
+    
+    PRIMARY KEY (codUser, codUserBloqueio),
+    FOREIGN KEY (codUser) REFERENCES Usuarios(codUser),
+    FOREIGN KEY (codUserBloqueio) REFERENCES Usuarios(codUser)  
+    
+    );
+
+CREATE TABLE Grupos(
+    codGrupo int not null AUTO_INCREMENT,
+    
+    PRIMARY KEY (codGrupo)
+    
+    );
+
+CREATE TABLE Participacao(
+    codGrupo int not null,
+    codUser int not null,
+    PRIMARY KEY (codGrupo, codUser),
+    FOREIGN KEY (codGrupo) REFERENCES Grupos(codGrupo),
+    FOREIGN KEY (codUser) REFERENCES Usuarios(codUser)
+                
+    
+    );
+
+CREATE TABLE Postagens (
+	codPostagens int not null AUTO_INCREMENT,
+    codMurais int not null,
+    codUser int not null,
+    PRIMARY KEY(codPostagens, codMurais, codUser),
+	FOREIGN KEY (codMurais) REFERENCES Murais(codMurais),
+    FOREIGN KEY (codUser) REFERENCES Usuarios(codUser)
+
+);
+
+
+
+CREATE TABLE Comentarios (
+    codComentarios int not null AUTO_INCREMENT,
+	codPostagens int not null,
+    codMurais int not null,
+    codUserPostagens int not null,
+    codUserComentarios int not null, 
+    PRIMARY KEY(codComentarios, codMurais, codPostagens, codUserPostagens, codUserComentarios),
+	FOREIGN KEY (codMurais, codPostagens, codUserPostagens) REFERENCES Postagens(codMurais, codPostagens, codUser),
+    FOREIGN KEY (codUserComentarios) REFERENCES Usuarios(codUser)
+
+
+);
+
+CREATE TABLE Respostas (
+    codRespostas int not null AUTO_INCREMENT,
+    codComentarios int not null,
+	codPostagens int not null,
+    codMurais int not null,
+   	codUserPostagens int not null,
+    codUserComentarios int not null,
+    codUserRespostas int not null, 
+    PRIMARY KEY(codRespostas, codComentarios, codMurais, codPostagens, codUserPostagens, codUserComentarios),
+	FOREIGN KEY (codComentarios, codMurais, codPostagens, codUserPostagens, codUserComentarios) REFERENCES Comentarios(codComentarios, codMurais, codPostagens, codUserPostagens, codUserComentarios),
+	FOREIGN KEY (codUserRespostas) REFERENCES Usuarios(codUser)
+
+);
+

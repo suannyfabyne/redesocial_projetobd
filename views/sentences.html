@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="myApp" lang="pt-br">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <script type="text/javascript" src="/javascripts/angular.min.js"></script>
+  <script src="/javascripts/reviewscontroller.js"></script>
+  <script src="/javascripts/sentencescontroller.js"></script>
+
+
+
+</head>
+<body ng-controller="MyCtrl">
+
+      <div class="header container" style="height: 150px;">
+      <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" style="font-family: FreeMono;"href="/">SubLibras 2.0</a>
+          </div>
+          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li  style="font-family: FreeMono;"><a href="/">Submeter</a></li>
+              <li class="active" style="font-family: FreeMono;"><a href="/reviews">Revisões</a></li>
+            </ul>
+          </div>
+        </div>  
+        <a class=class="glyphicon glyphicon-user fa-3x"></a>
+        <ul style="float: right; margin-right: 30px; text-align: right; list-style-type: none; font-family: FreeMono; font-size: 16px; ">
+	        <li><p style="color: white; margin: -1px;"> Usuário: {{clients.clientName}}</p></li>  
+	        <li><p style="color: white; margin: -1px;">Id do usuário: {{clients.clientId}}</p></li>  
+	        <li><p style="color: white;">Tipo: {{clients.type}}</p></li> 
+        </ul>
+      </div> 	
+    </div>
+    <div class="table-responsive container">
+      <div ng-controller="MyCtrl">
+        <table class="table table-bordered" style=" table-layout: fixed;">
+          <thead>
+            <tr>
+                <th style=" table-layout: fixed; text-align: center; font-family: FreeMono; width: 140px;"><p>ID da Sentença</p></th>
+                <th style=" table-layout: fixed; text-align: center; font-family: FreeMono;"><p>Sentença Original</p></th>
+                <th style=" table-layout: fixed; text-align: center;font-family: FreeMono;"><p>Sentença Traduzida</p></th>
+                <th style=" table-layout: fixed; text-align: center;font-family: FreeMono; width: 100px;"><p>Revisada</p></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="sentence in sentences" ng-click="setSentence(sentence.sentenceId, sentence.operator)" ng-class="{selected: sentence.sentenceId === idSelectedSentence}">
+                <td style="text-align: center; width: 140px;"> <p>{{sentence.sentenceId}}</p></td>
+                <td><p>{{sentence.OS}}</p></td>
+                <td><p>{{sentence.TS}}</p></td>
+                <td style="text-align: center; width: 100px;" ><p ng-if="Teste(sentence.operator)" style="" class="glyphicon glyphicon-ok"></p><p ng-if="Teste2(sentence.operator)" style="" class="glyphicon glyphicon-remove"></p></td>
+
+            </tr>
+          </tbody>
+        </table>
+                <button type="button" class="btn btn-success" ng-click="finalize()"  style="float: right; margin-right: 1%; width: 100px;">Finalizar</button>
+        <a href="/modify"> <button type="button" id="botao" value="mostra" class="btn btn-warning" ng-click="setSentene(idSelectedSentence, sentence.operator)" style="float: right; margin-right: 3%; width: 100px;">Revisar</button> </a> 
+
+
+
+    </div> 
+
+  </div>
+    <br>
+    <div class="container" >
+      <div id="div" style='display:none; width: 100%;' value="mostra" class="alert alert-danger" role="alert">
+          <h4 style="text-align: center; font-size: 16px; font-family: FreeMono;"> Mais de 30% do seu texto não possui sinal! Revise novamente.</h4>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="div2" style='display:none; width: 100%;' value="mostra" class="alert alert-success" role="alert">
+           <h4 style="text-align: center; font-size: 16px; font-family: FreeMono;"> Seu texto está finalizado! </h4>
+      </div>
+    </div>
+
+
+</body>
+</html>

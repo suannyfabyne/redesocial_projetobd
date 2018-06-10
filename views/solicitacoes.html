@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="myFacebook">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+    <script type="text/javascript" src="/javascripts/angular.min.js"></script>
+      <script src="/javascripts/facecontroller.js"></script>
+      <script type="text/javascript">
+        function reload() {
+        location.reload();
+    }
+
+      </script>
+
+    <title>Facebook-entre ou cadastre-se</title>
+    <link rel="icon" href="images/facebook-icone.png">
+
+    <!-- Bootstrap -->   
+        <link rel="icon" href="images/facebook-icone.png">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+
+  <body style="background-color:#e9ebee" ng-controller="MyCtrlFacebook">
+<!-- ****** parte do cabeçalho ******* --> 
+         <nav>
+
+             <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:#0f4a69; height:50px; width: 100%;"> </div>
+        
+         </nav>
+
+
+
+          <div class="container">
+
+            <table class="table table-bordered"  style=" table-layout: fixed; border:none; margin-top: 40px;">
+                <CAPTION ALIGN="top" style="margin-left: 20px; font-size: 20px;"> Solicitações enviadas a você: </CAPTION>
+              <tbody>
+                <tr ng-repeat="solicitacao in solicitacoes" style="border:none">
+                    <td style="text-align: center; width: 140px; border:none"> 
+                    <div class="jumbotron" style="background-color: #9bb4c1; width: 700px; margin-top: -10px; height: 120px;">
+                      <div>
+                        <img src="images/{{solicitacao.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
+                          <p style="margin-top: -35px; margin-left: -290px; "><button style="background-color: #9bb4c1; border-style: none;" ng-click="goToPerfil(solicitacao.codUser)"> {{solicitacao.nomeUser}} </button></p>
+
+                           <button  ng-click="AceitarAmizade(solicitacao.codUser)" style="width: 160px; height: 40px; margin-top: -70px; margin-left: 390px;" class="btn"><p style="font-size: 18px;">Aceitar</p></button>
+
+                            
+                        <br>
+                      </div>
+                      </div> 
+                      </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+          <div class="container">
+
+            <table class="table table-bordered"  style=" border:none; margin-top: 40px;">
+            <CAPTION ALIGN="top" style="margin-left: 20px; font-size: 20px;"> Solicitações enviadas por você: </CAPTION>
+              <tbody>
+                <tr ng-repeat="solicitacaobyme in solicitacoesbyme" style="border:none">
+                    <td style="text-align: center; width: 140px; border:none"> 
+                    <div class="jumbotron" style="background-color: #9bb4c1; width: 700px; margin-top: -10px; height: 120px;">
+                      <div>
+                        <img src="images/{{solicitacaobyme.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
+                          <p style="margin-top: -35px; margin-left: -290px; "><button style="background-color: #9bb4c1; border-style: none;" ng-click="goToPerfil(solicitacaobyme.codUserAmigo)"> {{solicitacaobyme.nomeUser}} </button></p>
+
+                           <button  style="width: 160px; height: 40px; margin-top: -70px; margin-left: 390px;" class="btn"><p style="font-size: 18px;">Pendente</p></button>
+
+                            
+                        <br>
+                      </div>
+                      </div> 
+                      </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->  </body>
+</html>
+</html>

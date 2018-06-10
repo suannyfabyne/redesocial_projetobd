@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="myApp" lang="pt-br">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <script type="text/javascript" src="/javascripts/angular.min.js"></script>
+  <script src="/javascripts/reviewscontroller.js"></script>
+
+</head>
+<body ng-controller="MyCtrl">
+
+      <div class="header container" style="height: 150px;">
+      <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" style="font-family: FreeMono;" href="/">SubLibras 2.0</a>
+          </div>
+          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="active" style="font-family: FreeMono;"><a href="/">Submeter</a></li>
+              <li style="font-family: FreeMono;"><a href="/reviews">Revisões</a></li>
+            </ul>
+          </div>
+        </div>  
+        <a class=class="glyphicon glyphicon-user fa-3x"></a>
+        <ul style="float: right; margin-right: 30px; text-align: right; list-style-type: none; font-family: FreeMono; font-size: 16px; ">
+          <li><p style="color: white; margin: -1px;"> Usuário: {{clients.clientName}}</p></li>  
+          <li><p style="color: white; margin: -1px;">Id do usuário: {{clients.clientId}}</p></li>  
+          <li><p style="color: white;">Tipo: {{clients.type}}</p></li> 
+        </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="row">
+    <div class="container">
+       <form action="/fileUpload" enctype="multipart/form-data" method="post">
+          <div class="jumbotron text-center col-sm-6" id="firstjumbotron">
+  	        <div class="form-group">
+  		        <label for="input" ></label>
+  		        <div class="uploadBtnVideo"> 
+                  <input type="file" name="avatar">
+              </div>
+  		     </div>
+  		      <p style=" font-size: 17px; color: black; font-family: FreeMono; ">Selecione um arquivo de texto</p>
+          </div>
+
+          <div class="jumbotron text-center col-sm-5 col-sm-offset-1" id="secondjumbotron">
+  	        <div class="form-group">
+  		    	<label for="input" ></label>
+  		   		<div class="uploadBtnLegenda"> 
+                <input type="file" name="avatar"> 
+            </div>
+  		    </div>
+  		    	<p style=" font-size: 17px; color: black; font-family: FreeMono;">Selecione uma legenda</p>
+          </div>
+      </div>
+      <div class="container" style="position: relative; margin-right: -230px;"> <div class="submitBtn"> <input type="submit" value="profileImage" key="avatar"> </div> </div>
+    </form>
+</div> 
+<html>
+
+
+
+
+</body>
+</html>

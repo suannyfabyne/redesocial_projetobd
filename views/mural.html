@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="myFacebook">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+    <script type="text/javascript" src="/javascripts/angular.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+      <script src="/javascripts/facecontroller.js"></script>
+      <script type="text/javascript">
+      	function reload() {
+		    location.reload();
+		}
+
+      </script>
+
+    <title>Facebook-entre ou cadastre-se</title>
+    <link rel="icon" href="images/facebook-icone.png">
+
+    <!-- Bootstrap -->   
+        <link rel="icon" href="images/facebook-icone.png">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+
+  <body ng-controller="MyCtrlFacebook" style="background-color: #e9ebee">
+<!-- ****** parte do cabeçalho ******* --> 
+         <nav>
+
+             <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:#0e3a71; height:50px; width: 100%;"> </div>
+        
+         </nav>
+
+	<div class="container">
+
+
+		          <div class="container">
+
+		             <div class="jumbotron" style=" border-radius: 3px; background-color: #0e3a71; opacity: 0.97; width: 230px; margin-left: -160px; margin-top: 20px; height: 450px;"> 
+		             <img src="images/{{usuario.fotoUser}}" style="width: 160%; margin-left: -30px; margin-top: -20px;" >
+		             <ul style="list-style-type: none; width: 70px; text-align: left; margin-left: -50px;">
+		                  <li style="color: white; font-size: 11px;  font-family: Quicksand; text-align: left; width: 200px;"><h3 style="font-size: 17px;"><b>{{usuario.nomeUser}}</b></h3></li>
+		                  <li style="color: white; font-size: 12px; margin-top: 40px;  font-family: Quicksand; margin-left: -20px; width: 200px;"> <b> Mora em: </b> {{usuario.cidadeUser}} </li>
+		                  <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b>Relacionamento:</b> {{usuario.relacionamentoUser}} </li>
+		                  <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b> Nasceu em: </b> {{usuario.nascUser}} </li>
+		            </ul>
+	           	  </div>
+
+
+                <div class="jumbotron" style=" border-radius: 3px; background-color: #0e3a71; width: 230px; margin-left: -230px; margin-top: 495px; height: 250px;"> 
+                    <lu style="list-style-type: none;">
+                      <li>  
+                        <a href="/usuarios" style="color:white;">Procurar pessoas</a>
+                      </li>
+                      <li>  
+                        <a href="/solicitacoes"><br></a>
+                      </li>
+                      <li>  
+                        <a href="/solicitacoes" style="color:white;">Ver solicitações</a>
+                      </li>
+                    </lu>
+                </div>
+
+
+         			 </div>  
+
+
+          <div class="container">
+             <div class="jumbotron" style="  border-radius: 3px; background-color: #0e3a71; opacity: 0.97; height: 230px; width: 700px; margin-top: 20px;"> 
+             	<label style="margin-left: -310px;  font-family: Quicksand; margin-top: -50px; color: white;"><h4><i>O que você está pensando?</i></h4></label>
+   				 <textarea style="margin-top: -10px;" type="text" class="form-control" rows="4" ng-model="post"> </textarea>
+   				 <button class="btn btn-default" ng-click="Postar(post)" onclick="reload()" style="margin-top: 10px; margin-right: -500px;">Postar</button>
+             </div>
+          </div>  
+            <div class="container">
+
+		        <table class="table table-bordered"  style=" table-layout: fixed; border:none; margin-top: 280px; margin-left: -740px;">
+		          <tbody>
+		            <tr ng-repeat="user in users" style="border:none">
+		                <td style="text-align: center; width: 140px; border:none"> 
+		                <div class="jumbotron" style="border: 0px solid #0e3a71; border-radius: 3px; background-color:white;opacity: 0.97;width: 700px; margin-bottom: 5px;">
+		                	<div>
+				                <img src="images/{{user.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
+				                <p style="margin-top: -35px; color: #0e3a71;  font-family: Quicksand; margin-left: -280px;"><b>{{user.nomeUser}}</b></p>
+                            <hr style="height:1px; border:none; color: #0e3a71; background-color:grey; margin-top: 0px; margin-bottom: 0px;"/>
+
+				                <br>
+			                </div>
+			                <p style="text-align: justify; color: #0e3a71; font-family: Quicksand;">{{user.post}}</p>
+			                <p style="margin-bottom: -20px; position: relative; margin-left: 450px; color: #0e3a71; font-family: Quicksand;" > <b>{{user.datapost}}</b> </p>
+							       </div> 
+
+                     <div class="container">
+
+                     <table class="table table-bordered"  style="margin-left: -15px; margin-top: -7px;">
+
+                       <tr ng-repeat="comentario in comentarios | filter: {codPostagens: user.codPostagens} | filter: {codMurais: user.codMurais}" ">
+
+                          <td>
+                          <img src="images/{{comentario.fotoUser}}" style="width: 3%; margin-left: -530px;">
+                          <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -370px; margin-top: -20px;"><b>{{comentario.nomeUser}}: </b></p>
+
+                          <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 220px;"><b>{{comentario.comentario}}</b></p>
+
+
+
+                       <table class="table table-bordered"  style="margin-top: 0px;">
+                           <tr ng-repeat="resposta in respostas | filter: {codComentarios: comentario.codComentarios} ">
+                             <td>
+                                <img src="images/{{resposta.fotoUser}}" style="width: 3%; margin-left: -230px;">
+                                <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -70px; margin-top: -20px;"><b>{{resposta.nomeUser}}: </b></p>
+
+                                <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 360px;"><b>{{resposta.resposta}}</b></p>
+
+                             </td>
+                           </tr>
+                         </table>
+                        
+
+                    
+
+              
+                        <div class="row" style="">
+                         <div class="col-xs-6 col-md-6" style="margin-left: 220px;"> <textarea style="" type="text" class="form-control" rows="1" ng-model="resposta" style="" > </textarea> </div>
+                         <div class="col-xs-6 col-md-2" style=" margin-left: -15px;"> <button class="btn btn-default" ng-click="Responder(user.codPostagens, comentario.codComentarios, resposta, user.codUser, comentario.codUser)" onclick="reload()" style="">Responder</button> </div>
+                        </div>
+
+                          </td>
+                       
+                       </tr>
+                     </table>
+                     </div>
+
+
+
+
+                     <div class="container">
+                     <div class="jumbotron" style="border: 2px solid #0e3a71; border-radius: 3px; margin-left: -15px; margin-top: -20px; height: 10px; background-color: #0e3a71;">
+                     <div class="row" style="margin-top: -20px; margin-bottom: -20px;">
+                         <div class="col-xs-6 col-md-10" style="width: 500px; margin-left: -12px;"> <textarea style="" type="text" class="form-control" rows="1" ng-model="coment" > </textarea> </div>
+                         <div class="col-xs-6 col-md-2" style=" margin-left: 0px;"> <button class="btn btn-default" ng-click="Comentar(user.codPostagens, coment, user.codUser)"" onclick="reload()" style="">Comentar</button> </div>
+                      </div></div> </div>
+			                </td>   
+                                
+		            </tr>
+		          </tbody>
+		        </table>
+		    </div>
+
+	</div>
+
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->  </body>
+</html>
