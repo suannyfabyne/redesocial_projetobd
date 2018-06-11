@@ -3,10 +3,91 @@ var router = express.Router();
 var connection = require('../db/connection');
 
 
+router.post('/ExcluirResposta', (req, res) =>{
+
+
+         sql3 = "DELETE FROM Respostas WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem + " AND codRespostas=" + req.body.codRespostas;
+          connection.query(sql3, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+
+       
+});
+
+router.post('/ExcluirComentario', (req, res) =>{
+
+
+         sql2 = "DELETE FROM Respostas WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem + " AND codComentarios=" + req.body.codComentarios;
+        console.log(sql2);
+
+        connection.query(sql2, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+
+         sql3 = "DELETE FROM Comentarios WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem + " AND codComentarios=" + req.body.codComentarios;
+          connection.query(sql3, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+
+       
+});
+
+
+router.post('/ExcluirPost', (req, res) =>{
+
+        var sql = "DELETE FROM Respostas WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem;;
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+
+         sql2 = "DELETE FROM Comentarios WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem;
+         sql3 = "DELETE FROM Postagens WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem;
+          connection.query(sql2, function (err, result,fields) {
+          if (err) throw err;
+        });
+        connection.query(sql3, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+       
+});
+
+
+router.post('/MudarPrivacidade', (req, res) =>{
+
+    console.log(req.body.id_amigo + ' ' + req.body.idUser );
+        var sql = "UPDATE Postagens SET privacidade='" + req.body.select +"' WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem;
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+
+router.get('/checkAmigo/:codUser/:id_amigo', (req, res) =>{
+
+        if(req.params.codUser) filter = " AND (Amizades.codUserAmigo=" + req.params.codUser + " OR Amizades.codUser=" + req.params.codUser + ") AND (Amizades.codUserAmigo=" + req.params.id_amigo + " OR Amizades.codUser=" + req.params.id_amigo + ") AND statusAmizade='aceito'";
+      connection.query("SELECT * FROM Usuarios JOIN Amizades ON Usuarios.codUser = Amizades.codUser WHERE statusAmizade='aceito'" + filter, function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+        });
+
+});
+
 router.get('/amigos/:codUser', (req, res) =>{
 
         if(req.params.codUser) filter = " AND (Amizades.codUserAmigo=" + req.params.codUser + " OR Amizades.codUser=" + req.params.codUser + ")";
-      connection.query("SELECT * FROM Usuarios JOIN Amizades ON Usuarios.codUser = Amizades.codUser WHERE statusAmizade='aceito'" + filter, function(error, results, fields){
+      connection.query("SELECT * FROM Usuarios INNER JOIN Amizades ON Usuarios.codUser = Amizades.codUser WHERE statusAmizade='aceito'" + filter, function(error, results, fields){
         if(error) 
           res.json(error);
         else
@@ -17,6 +98,17 @@ router.get('/amigos/:codUser', (req, res) =>{
 
 });
 
+router.post('/rejeitaramizade', (req, res) =>{
+
+    console.log(req.body.id_amigo + ' ' + req.body.idUser );
+        var sql = "DELETE FROM Amizades WHERE (codUser=" + req.body.id_amigo + " AND codUserAmigo=" + req.body.idUser + ") OR (codUser=" + req.body.idUser + " AND codUserAmigo=" + req.body.id_amigo + ")";
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
 
 router.post('/aceitaramizade', (req, res) =>{
 
@@ -151,9 +243,9 @@ router.post('/postar', (req, res) =>{
 		var data = new Date();
 		
         var values = [
-        [req.body.post,req.body.idUser, req.body.idMural, data.getDay()],
+        [req.body.post,req.body.idUser, req.body.idMural, data.getDay(), req.body.select, req.body.url2],
         ];
-        var sql = "INSERT INTO Postagens (post, codUser, codMurais, datapost) VALUES ?";
+        var sql = "INSERT INTO Postagens (post, codUser, codMurais, datapost, privacidade, urlimagepost) VALUES ?";
 
         connection.query(sql, [values] , function (err, result,fields) {
           if (err) throw err;
@@ -167,7 +259,7 @@ let filter = '';
     if(req.params.codMurais) filter = " WHERE Postagens.codMurais=" + req.params.codMurais;
 
 
- connection.query('SELECT Usuarios.codUser, Usuarios.nomeUser, Usuarios.fotoUser, Postagens.post, Postagens.datapost, Postagens.codMurais, Postagens.codPostagens FROM Usuarios INNER JOIN Postagens ON Usuarios.codUser=Postagens.codUser ' + filter, function(error, results, fields){
+ connection.query('SELECT Usuarios.codUser, Usuarios.nomeUser, Usuarios.fotoUser, Postagens.post, Postagens.datapost, Postagens.codMurais, Postagens.codPostagens, Postagens.privacidade, Postagens.urlimagepost FROM Usuarios INNER JOIN Postagens ON Usuarios.codUser=Postagens.codUser ' + filter + ' order by Postagens.codPostagens DESC', function(error, results, fields){
       if(error) 
         res.json(error);
       else

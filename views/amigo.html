@@ -75,16 +75,20 @@
 
                </div>  
 
-
           <div class="container">
              <div class="jumbotron" style="  border-radius: 3px; background-color: #0e3a71; opacity: 0.97; height: 230px; width: 700px; margin-top: 20px;"> 
               <label style="margin-left: -310px;  font-family: Quicksand; margin-top: -50px; color: white;"><h4><i>O que você está pensando?</i></h4></label>
            <textarea style="margin-top: -10px;" type="text" class="form-control" rows="4" ng-model="post"> </textarea>
-           <button class="btn btn-default" ng-click="PostarAmigo(post)" onclick="reload()" style="margin-top: 10px; margin-right: -500px;">Postar</button>
-             </div>
-          </div>  
-            <div class="container">
+                      <form style="position: absolute; margin-top: 10px;" method="post" enctype="multipart/form-data">
+         <button style="margin-left: 0px; "><label for="file" style="margin-top: 0px;  height: 10px;">  &ensp; Escolher foto &ensp; </label>
+         <input type="file" style="height: 0px;" onchange="readURL2(this);" id="file" name="file" multiple> </input></button>
+          </form> 
 
+           <button class="btn btn-default" ng-click="PostarAmigo(post)" onclick="reload()" style="margin-top: 10px; margin-right: -500px;">Postar</button> 
+             </div>
+          </div>
+            <div class="container">
+            <div ng-if="checkAmigo()">
             <table class="table table-bordered"  style=" table-layout: fixed; border:none; margin-top: 280px; margin-left: -740px;">
               <tbody>
                 <tr ng-repeat="muralamigo in muraisamigos" style="border:none">
@@ -97,6 +101,7 @@
 
                         <br>
                       </div>
+                      <div ng-show="null !== {{muralamigo.urlimagepost}} "><img src="images/{{muralamigo.urlimagepost}}" style="width: 60%; margin-bottom: 20px; margin-left: -50px; margin-top: 0px;" ></div>
                       <p style="text-align: justify; color: #0e3a71; font-family: Quicksand;">{{muralamigo.post}}</p>
                       <p style="margin-bottom: -20px; position: relative; margin-left: 450px; color: #0e3a71; font-family: Quicksand;" > <b>{{muralamigo.datapost}}</b> </p>
                      </div> 
@@ -107,22 +112,21 @@
 
                        <tr ng-repeat="comentarioamigo in comentariosamigos | filter: {codPostagens: muralamigo.codPostagens}"">
 
-                          <td>
-                          <img src="images/{{comentarioamigo.fotoUser}}" style="width: 3%; margin-left: -530px;">
-                          <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -370px; margin-top: -20px;"><b>{{comentarioamigo.nomeUser}}: </b></p>
+                          <td> 
+                            <img src="images/{{comentarioamigo.fotoUser}}" style="width: 3%; margin-left: -530px;">
+                            <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -370px; margin-top: -20px;"><b>{{comentarioamigo.nomeUser}}: </b></p>
 
-                          <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 220px;"><b>{{comentarioamigo.comentario}}</b></p>
+                            <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 220px;"><b>{{comentarioamigo.comentario}}</b></p>
 
 
 
-                       <table class="table table-bordered"  style="margin-top: 0px;">
-                           <tr ng-repeat="respostaamigo in respostasamigos | filter: {codComentarios: comentarioamigo.codComentarios} ">
-                             <td>
-                                <img src="images/{{respostaamigo.fotoUser}}" style="width: 3%; margin-left: -230px;">
-                                <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -70px; margin-top: -20px;"><b>{{respostaamigo.nomeUser}}: </b></p>
+                         <table class="table table-bordered"  style="margin-top: 0px;">
+                             <tr ng-repeat="respostaamigo in respostasamigos | filter: {codComentarios: comentarioamigo.codComentarios} ">
+                               <td>
+                                  <img src="images/{{respostaamigo.fotoUser}}" style="width: 3%; margin-left: -230px;">
+                                  <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -70px; margin-top: -20px;"><b>{{respostaamigo.nomeUser}}: </b></p>
 
-                                <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 360px;"><b>{{respostaamigo.resposta}}</b></p>
-
+                                  <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 360px;"><b>{{respostaamigo.resposta}}</b></p>
                              </td>
                            </tr>
                          </table>
@@ -140,6 +144,7 @@
                        
                        </tr>
                      </table>
+                     </div>
                      </div>
 
 
@@ -161,6 +166,82 @@
   </div>
 
 
+            <div class="container">
+            <div ng-if="!checkAmigo()">
+            <table class="table table-bordered"  style=" table-layout: fixed; border:none; margin-top: 280px; margin-left: -740px;">
+              <tbody>
+                <tr ng-repeat="muralamigo in muraisamigos | filter: {privacidade: 'Público'} " style="border:none">
+                    <td style="text-align: center; width: 140px; border:none"> 
+                    <div class="jumbotron" style="border: 0px solid #0e3a71; border-radius: 3px; background-color:white;opacity: 0.97;width: 700px; margin-bottom: 5px; margin-left: -25px;">
+                      <div>
+                        <img src="images/{{muralamigo.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
+                        <p style="margin-top: -35px; color: #0e3a71;  font-family: Quicksand; margin-left: -280px;"><b>{{muralamigo.nomeUser}}</b></p>
+                            <hr style="height:1px; border:none; color: #0e3a71; background-color:grey; margin-top: 0px; margin-bottom: 0px;"/>
+
+                        <br>
+                      </div><div ng-show="null !== {{muralamigo.urlimagepost}} "><img src="images/{{muralamigo.urlimagepost}}" style="width: 60%; margin-bottom: 20px; margin-left: -50px; margin-top: 0px;" ></div>
+                      <p style="text-align: justify; color: #0e3a71; font-family: Quicksand;">{{muralamigo.post}}</p>
+                      <p style="margin-bottom: -20px; position: relative; margin-left: 450px; color: #0e3a71; font-family: Quicksand;" > <b>{{muralamigo.datapost}}</b> </p>
+                     </div> 
+
+                     <div class="container">
+
+                     <table class="table table-bordered"  style="margin-left: -15px; margin-top: -7px;">
+
+                       <tr ng-repeat="comentarioamigo in comentariosamigos | filter: {codPostagens: muralamigo.codPostagens}"">
+
+                          <td> 
+                            <img src="images/{{comentarioamigo.fotoUser}}" style="width: 3%; margin-left: -530px;">
+                            <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -370px; margin-top: -20px;"><b>{{comentarioamigo.nomeUser}}: </b></p>
+
+                            <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 220px;"><b>{{comentarioamigo.comentario}}</b></p>
+
+
+
+                         <table class="table table-bordered"  style="margin-top: 0px;">
+                             <tr ng-repeat="respostaamigo in respostasamigos | filter: {codComentarios: comentarioamigo.codComentarios} ">
+                               <td>
+                                  <img src="images/{{respostaamigo.fotoUser}}" style="width: 3%; margin-left: -230px;">
+                                  <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -70px; margin-top: -20px;"><b>{{respostaamigo.nomeUser}}: </b></p>
+
+                                  <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 360px;"><b>{{respostaamigo.resposta}}</b></p>
+                             </td>
+                           </tr>
+                         </table>
+                        
+
+                    
+
+              
+                        <div class="row" style="">
+                         <div class="col-xs-6 col-md-6" style="margin-left: 220px;"> <textarea style="" type="text" class="form-control" rows="1" ng-model="resposta" style="" > </textarea> </div>
+                         <div class="col-xs-6 col-md-2" style=" margin-left: -15px;"> <button class="btn btn-default" ng-click="ResponderAmigo(muralamigo.codPostagens, comentarioamigo.codComentarios, resposta, muralamigo.codUser, comentarioamigo.codUser)"" onclick="reload()" style="">Responder</button> </div>
+                        </div>
+
+                          </td>
+                       
+                       </tr>
+                     </table>
+                     </div>
+                     </div>
+
+
+
+
+                     <div class="container">
+                     <div class="jumbotron" style="border: 2px solid #0e3a71; border-radius: 3px; margin-left: -40px; margin-top: -20px; height: 10px; background-color: #0e3a71;">
+                     <div class="row" style="margin-top: -20px; margin-bottom: -20px;">
+                         <div class="col-xs-6 col-md-10" style="width: 500px; margin-left: -12px;"> <textarea style="" type="text" class="form-control" rows="1" ng-model="coment" > </textarea> </div>
+                         <div class="col-xs-6 col-md-2" style=" margin-left: 0px;"> <button class="btn btn-default" ng-click="ComentarAmigo(muralamigo.codPostagens, coment, muralamigo.codUser)"" onclick="reload()" style="">Comentar</button> </div>
+                      </div></div> </div>
+                      </td>   
+                                
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+  </div>
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

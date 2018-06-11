@@ -13,13 +13,112 @@ var myApp = angular.module('myFacebook',[])
           }
     }
 
+    window.readURL2 = function(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              localStorage.url2 = input.files[0].name
+              console.log(input.files[0].name);
+          }
+    }
+
+
+ $scope.ExcluirPost = function (codPostagem, codMural) {
+
+    var idUser = localStorage.idUser
+    var dadosExcluir = {
+      codPostagem, codMural
+    };
+    console.log(dadosExcluir)
+
+      $http.post('http://localhost:3000/endpoint/ExcluirPost', dadosExcluir).then(function(success) {
+
+      })
+  }
+
+   $scope.ExcluirComentario = function (codPostagem, codMural, codComentarios) {
+
+    var idUser = localStorage.idUser
+    var dadosExcluir = {
+      codPostagem, codMural, codComentarios
+    };
+    console.log(dadosExcluir)
+
+      $http.post('http://localhost:3000/endpoint/ExcluirComentario', dadosExcluir).then(function(success) {
+        
+      })
+  }
+
+   $scope.ExcluirResposta = function (codPostagem, codMural, codRespostas) {
+
+    var idUser = localStorage.idUser
+    var dadosExcluir = {
+      codPostagem, codMural, codRespostas
+    };
+    console.log(dadosExcluir)
+
+      $http.post('http://localhost:3000/endpoint/ExcluirResposta', dadosExcluir).then(function(success) {
+
+      })
+  }
+
+
+ $scope.MudarPrivacidade = function (codPostagem, codMural, select) {
+
+    var idUser = localStorage.idUser
+    var dadosSolicitar = {
+      codPostagem, codMural, select
+    };
+
+      $http.post('http://localhost:3000/endpoint/MudarPrivacidade', dadosSolicitar).then(function(success) {
+
+      })
+  }
+
+
+var CheckAmigo = function (id_amigo) {
+
+
+        var idUser = localStorage.idUser;
+        $http.get('http://localhost:3000/endpoint/checkAmigo/' + idUser + '/' + id_amigo).then(function(success) {
+          if(success.data == '') {
+            $scope.seamigo = 0;
+            localStorage.seamigo = $scope.seamigo;
+
+          }
+          else { $scope.seamigo = 1;
+            localStorage.seamigo = $scope.seamigo;
+
+          }
+        })
+
+  }
+CheckAmigo(localStorage.id_amigo);
+
+$scope.checkAmigo = function () {
+        if(localStorage.seamigo == 1) return 1
+        else {return 0}
+
+}
+
+ $scope.RejeitarAmizade = function (id_amigo) {
+
+    var idUser = localStorage.idUser
+    var dadosSolicitar = {
+      id_amigo, idUser
+    };
+
+      $http.post('http://localhost:3000/endpoint/rejeitaramizade', dadosSolicitar).then(function(success) {
+          console.log("Solicitei");
+
+      })
+  }
+
  $scope.AceitarAmizade = function (id_amigo) {
 
     var idUser = localStorage.idUser
     var dadosSolicitar = {
       id_amigo, idUser
     };
-    console.log(dadosSolicitar)
 
       $http.post('http://localhost:3000/endpoint/aceitaramizade', dadosSolicitar).then(function(success) {
           console.log("Solicitei");
@@ -34,7 +133,6 @@ var myApp = angular.module('myFacebook',[])
           console.log(codMurais + 'codmurais')
           if(success.data.length>0) {
             $scope.respostasamigos = success.data;
-            console.log(success.data)
           }
         })
   }
@@ -63,7 +161,6 @@ var myApp = angular.module('myFacebook',[])
           console.log(codMurais + 'codmurais')
           if(success.data.length>0) {
             $scope.comentariosamigos = success.data;
-            console.log(success.data)
               RespostasAmigo(localStorage.muraisAmigo);
 
           }
@@ -80,7 +177,6 @@ var myApp = angular.module('myFacebook',[])
     var dadosComent = {
       comentario, idpost, codUserComentarios, idMural, codUserPostagens
     };
-    console.log(dadosComent);
 
       $http.post('http://localhost:3000/endpoint/comentar', dadosComent).then(function(success) {
           console.log("Comentei");
@@ -92,10 +188,8 @@ var myApp = angular.module('myFacebook',[])
  var Respostas = function (codMurais) {
 
         $http.get('http://localhost:3000/endpoint/respostas/' + codMurais).then(function(success) {
-          console.log(codMurais + 'codmurais')
           if(success.data.length>0) {
             $scope.respostas = success.data;
-            console.log(success.data)
           }
         })
   }
@@ -118,7 +212,6 @@ var myApp = angular.module('myFacebook',[])
  var Comentarios = function (codMurais) {
 
         $http.get('http://localhost:3000/endpoint/comentarios/' + codMurais).then(function(success) {
-          console.log(codMurais + 'codmurais')
           if(success.data.length>0) {
             $scope.comentarios = success.data;
             console.log(success.data)
@@ -137,7 +230,6 @@ var myApp = angular.module('myFacebook',[])
     var dadosComent = {
       comentario, idpost, codUserComentarios, idMural, codUserPostagens
     };
-    console.log(dadosComent);
 
       $http.post('http://localhost:3000/endpoint/comentar', dadosComent).then(function(success) {
           console.log("Comentei");
@@ -150,7 +242,7 @@ var myApp = angular.module('myFacebook',[])
   $scope.goToPerfil = function (id_amigo) {
         localStorage.amigo = id_amigo;
         $window.location.href = '/amigo';
-  
+        localStorage.id_amigo = id_amigo;
   }
 
       var getAmigo = function(id_amigo){ 
@@ -159,7 +251,6 @@ var myApp = angular.module('myFacebook',[])
             $scope.amigo = success.data[0];
             localStorage.muraisAmigo = success.data[0].codMurais
             getPostsAmigo(success.data[0].codMurais);
-            console.log(success.data[0])
 
           }
         })
@@ -169,7 +260,6 @@ var myApp = angular.module('myFacebook',[])
         var getPostsAmigo = function(codMurais){ 
 
         $http.get('http://localhost:3000/endpoint/posts/' + codMurais).then(function(success) {
-          console.log(codMurais + 'codmurais')
           if(success.data.length>0) {
             $scope.muraisamigos = success.data;
             ComentariosAmigo(localStorage.muraisAmigo);
@@ -185,7 +275,6 @@ var myApp = angular.module('myFacebook',[])
         $http.get('http://localhost:3000/endpoint/amigos/' + codUser).then(function(success) {
           if(success.data.length>0) {
             $scope.amigos = success.data;
-            console.log('aaaaa')
           }
 
         })
@@ -195,11 +284,9 @@ var myApp = angular.module('myFacebook',[])
 
   var Solicitacao = function (codUser) {
 
-        console.log(codUser)
         $http.get('http://localhost:3000/endpoint/amizaderequests/' + codUser).then(function(success) {
           if(success.data.length>0) {
             $scope.solicitacoes = success.data;
-            console.log('aaaaa')
           }
 
         })
@@ -212,7 +299,6 @@ var SolicitacaoBYME = function (codUser) {
         $http.get('http://localhost:3000/endpoint/amizaderequestsBYME/' + codUser).then(function(success) {
           if(success.data.length>0) {
             $scope.solicitacoesbyme = success.data;
-              //console.log(success.data)
 
           }
         })
@@ -242,11 +328,12 @@ var SolicitacaoBYME = function (codUser) {
     console.log(post)
     console.log(localStorage.idUser)
     console.log(localStorage.muraisAmigo)
+    url2 = localStorage.url2;
 
     var idUser = localStorage.idUser
     var idMural = localStorage.muraisAmigo
     var dadosPost = {
-      post, idUser, idMural
+      post, idUser, idMural, url2
     };
 
 
@@ -254,34 +341,38 @@ var SolicitacaoBYME = function (codUser) {
           history.go(0);
           console.log("Postei");
       })
-
+      localStorage.url2 = null
+      url = null
   }
 
 
-  $scope.Postar = function (post) {
+  $scope.Postar = function (post, select) {
 
     console.log(post)
     console.log(localStorage.idUser)
     console.log(localStorage.murais)
+    console.log(select);
+    url2 = localStorage.url2;
 
     var idUser = localStorage.idUser
     var idMural = localStorage.murais
     var dadosPost = {
-      post, idUser, idMural
+      post, idUser, idMural, select, url2
     };
 
-
+    console.log(dadosPost)
       $http.post('http://localhost:3000/endpoint/postar', dadosPost).then(function(success) {
           history.go(0);
           console.log("Postei");
-      })
 
-  }
+      })
+      localStorage.url2 = null
+      url = null
+  } 
 
   $scope.Cadastro = function (data, nome, senha, email, genero, status, cidade) {
 
     url = localStorage.url;
-    console.log(url)
     var dadosUser = {
       nome, data, senha, email, cidade, status, genero, url
     };
@@ -297,7 +388,6 @@ var SolicitacaoBYME = function (codUser) {
     var loginUser = {
       email, senha
     };
-    console.log(loginUser);
 
       $http.get('http://localhost:3000/endpoint/login/' + email + '/' + senha).then(function(success) {
           if(success.data == '') {
@@ -321,7 +411,6 @@ var SolicitacaoBYME = function (codUser) {
         $http.get('http://localhost:3000/endpoint/usuarios').then(function(success) {
           if(success.data.length>0) {
             $scope.usuarios = success.data;  
-            console.log()
           }
         })
       } 
@@ -332,7 +421,6 @@ var SolicitacaoBYME = function (codUser) {
         $http.get('http://localhost:3000/endpoint/usuarios/' + idUser).then(function(success) {
           if(success.data.length>0) {
             $scope.usuario = success.data[0];  
-            console.log(success.data[0].codMurais)
             localStorage.murais = success.data[0].codMurais;
             getPosts(localStorage.murais);
 
@@ -344,7 +432,6 @@ var SolicitacaoBYME = function (codUser) {
         var getPosts = function(codMurais){ 
 
         $http.get('http://localhost:3000/endpoint/posts/' + codMurais).then(function(success) {
-          console.log(codMurais + 'codmurais')
           if(success.data.length>0) {
             $scope.users = success.data;
               Comentarios(localStorage.murais);
