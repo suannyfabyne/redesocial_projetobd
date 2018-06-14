@@ -55,9 +55,9 @@
                         <img src="images/{{solicitacao.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
                           <p style="margin-top: -35px; margin-left: -290px; "><button style="background-color: #9bb4c1; border-style: none;" ng-click="goToPerfil(solicitacao.codUser)"> {{solicitacao.nomeUser}} </button></p>
 
-                           <button  ng-click="AceitarAmizade(solicitacao.codUser)" style="width: 160px; height: 40px; margin-top: -70px; margin-left: 460px;" class="btn"><p style="font-size: 18px;">Aceitar</p></button>
+                           <button onclick="reload()" ng-click="AceitarAmizade(solicitacao.codUser)" style="width: 160px; height: 40px; margin-top: -70px; margin-left: 460px;" class="btn"><p style="font-size: 18px;">Aceitar</p></button>
 
-                           <button  ng-click="RejeitarAmizade(solicitacao.codUser)" style="width: 160px; height: 40px; margin-top: -110px; margin-left: 160px;" class="btn"><p style="font-size: 18px;">Rejeitar</p></button>
+                           <button onclick="reload()" ng-click="RejeitarAmizade(solicitacao.codUser)" style="width: 160px; height: 40px; margin-top: -110px; margin-left: 160px;" class="btn"><p style="font-size: 18px;">Rejeitar</p></button>
 
                             
                         <br>

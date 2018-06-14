@@ -13,9 +13,6 @@ var http = require('http');
 
 
 var index = require('./routes/index');
-var users = require('./routes/users');
-var fileUpload = require('./routes/fileUpload');
-var requests = require('./routes/requests');
 var endpoint = require('./routes/endpoint');
 
 var app = express();
@@ -34,9 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/fileUpload', fileUpload);
-app.use('/requests', requests);
+
 app.use('/endpoint', endpoint);
 
 
