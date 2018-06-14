@@ -47,6 +47,11 @@
         <!-- lado esqerdo da parte de cima -->
              <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:rgb(61,91,153); height:90px;">
 
+    <div class="container" >
+      <div id="div" style='display:none; width: 50%; display: left; position: absolute; margin-left: -500px;' value="mostra" class="alert alert-danger" role="alert">
+          <h4 style="text-align: center; font-size: 16px;"> Usuário não cadastrado.</h4>
+      </div>
+    </div>
 
         <!-- lado esqerdo da parte de cima -->
         <div class="container">
@@ -72,13 +77,8 @@
         
 <!-- parte do meio da tela principal--> 
 <nav >
-    
-    <div class="container" >
-      <div id="div" style='display:none; width: 50%; display: left; position: absolute;' value="mostra" class="alert alert-danger" role="alert">
-          <h4 style="text-align: center; font-size: 16px;"> Usuário não cadastrado.</h4>
-      </div>
-    </div>
 
+    
 
   <div class="col-md-6" style="background-color:#e9ebee; height:1000px;">
           <h1 style="color:#333; margin-left:175px; margin-top:40px;">Logins recentes</h1>
@@ -141,7 +141,7 @@
           <td></tr>
           <tr> 
           	<td>
-            <button type="submit" style="margin-top: 20px; width: 100%" ng-click="Cadastro(user.data, user.nome, user.senha, user.email, user.genero, user.status, user.cidade)" class="btn btn-success btn-lg">Cadastre-se</button>
+            <button type="submit" style="margin-top: 20px; width: 100%"  ng-click="Cadastro(user.data, user.nome, user.senha, user.email, user.genero, user.status, user.cidade)" class="btn btn-success btn-lg">Cadastre-se</button>
           </td>
         </tr>
           </table>

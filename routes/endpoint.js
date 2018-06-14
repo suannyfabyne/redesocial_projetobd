@@ -531,7 +531,7 @@ router.post('/postar', (req, res) =>{
 		var data = new Date();
 		
         var values = [
-        [req.body.post,req.body.idUser, req.body.idMural, data.getDay(), req.body.select, req.body.url4],
+        [req.body.post,req.body.idUser, req.body.idMural, data.getDay(), req.body.select, req.body.url],
         ];
         var sql = "INSERT INTO Postagens (post, codUser, codMurais, datapost, privacidade, urlimagepost) VALUES ?";
 
@@ -585,7 +585,7 @@ router.get('/usuarios/:idUser', (req, res) =>{
 
 
 router.get('/gruposlist/:idUser', (req, res) =>{
- connection.query("SELECT * FROM Grupos WHERE Grupos.codGrupo NOT IN (SELECT Participacao.codGrupo FROM Participacao JOIN Grupos ON Participacao.codGrupo=Grupos.codGrupo WHERE Participacao.codUser = 50 AND (statusMembro = 'bloqueado' OR statusMembro ='aceito' OR statusMembro='admin'))", function(error, results, fields){
+ connection.query("SELECT * FROM Grupos WHERE Grupos.codGrupo NOT IN (SELECT Participacao.codGrupo FROM Participacao JOIN Grupos ON Participacao.codGrupo=Grupos.codGrupo WHERE Participacao.codUser =" + req.params.idUser + " AND (statusMembro = 'bloqueado' OR statusMembro ='aceito' OR statusMembro='admin' OR statusMembro='pendente'))", function(error, results, fields){
       if(error) 
         res.json(error);
       else

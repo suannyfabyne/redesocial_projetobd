@@ -126,11 +126,11 @@ var myApp = angular.module('myFacebook',[])
     $scope.PostarGrupo = function (post, idMural) {
 
       console.log(idMural)
-      url4 = localStorage.url4;
+      url = localStorage.url4;
 
       var idUser = localStorage.idUser
       var dadosPost = {
-        post, idUser, idMural, url4
+        post, idUser, idMural, url
       };
 
       console.log(dadosPost)
@@ -140,7 +140,7 @@ var myApp = angular.module('myFacebook',[])
 
         })
         localStorage.url4 = null
-        url4 = null
+        url = null
     } 
 
   $scope.ComentarGrupo = function (idpost, comentario, codUserPostagens, idMural) {
@@ -722,12 +722,12 @@ var SolicitacaoBYME = function (codUser) {
     console.log(post)
     console.log(localStorage.idUser)
     console.log(localStorage.muraisAmigo)
-    url2 = localStorage.url2;
+    url = localStorage.url2;
 
     var idUser = localStorage.idUser
     var idMural = localStorage.muraisAmigo
     var dadosPost = {
-      post, idUser, idMural, url2
+      post, idUser, idMural, url
     };
 
 
@@ -746,18 +746,19 @@ var SolicitacaoBYME = function (codUser) {
     console.log(localStorage.idUser)
     console.log(localStorage.murais)
     console.log(select);
-    url2 = localStorage.url2;
+    url = localStorage.url2;
 
     var idUser = localStorage.idUser
     var idMural = localStorage.murais
     var dadosPost = {
-      post, idUser, idMural, select, url2
+      post, idUser, idMural, select, url
     };
 
     console.log(dadosPost)
       $http.post('http://localhost:3000/endpoint/postar', dadosPost).then(function(success) {
           history.go(0);
           console.log("Postei");
+        localStorage.url2 = null
 
       })
       localStorage.url2 = null
