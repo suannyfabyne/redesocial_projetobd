@@ -30,5 +30,24 @@ router.get('/listaamigos', function(req, res, next) {
   res.render('listaamigos', { title: 'Express' });
 });
 
+router.get('/criargrupo', function(req, res, next) {
+  res.render('criargrupo', { title: 'Express' });
+});
+
+router.get('/grupo', function(req, res, next) {
+  res.render('grupo', { title: 'Express' });
+});
+
+router.get('/listagrupos', function(req, res, next) {
+  res.render('listagrupos', { title: 'Express' });
+});
+
+router.get('/listagruposwhereadmin', function(req, res, next) {
+  res.render('listagruposwhereadmin', { title: 'Express' });
+});
+
+router.get('/listamembros', function(req, res, next) {
+  res.render('listamembros', { title: 'Express' });
+});
 
 module.exports = router;

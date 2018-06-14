@@ -3,6 +3,295 @@ var router = express.Router();
 var connection = require('../db/connection');
 
 
+
+router.post('/removergrupo', (req, res) =>{
+
+        console.log(req.body.cod_user + ' ' + req.body.cod_grupo );
+        var sql = "DELETE FROM Participacao WHERE codUser=" + req.body.cod_user + " AND codGrupo=" + req.body.cod_grupo;
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+
+router.post('/tornaradmgrupo', (req, res) =>{
+
+        console.log(req.body.cod_user + ' ' + req.body.cod_grupo );
+        var sql = "UPDATE Participacao SET statusMembro='admin' WHERE codUser=" + req.body.cod_user + " AND codGrupo=" + req.body.cod_grupo;
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+
+
+router.post('/bloqueargrupo', (req, res) =>{
+
+        console.log(req.body.cod_user + ' ' + req.body.cod_grupo );
+        var sql = "UPDATE Participacao SET statusMembro='bloqueado' WHERE codUser=" + req.body.cod_user + " AND codGrupo=" + req.body.cod_grupo;
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+router.post('/desbloqueargrupo', (req, res) =>{
+
+        console.log(req.body.cod_user + ' ' + req.body.cod_grupo );
+        var sql = "UPDATE Participacao SET statusMembro='aceito' WHERE codUser=" + req.body.cod_user + " AND codGrupo=" + req.body.cod_grupo;
+        console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+router.get('/listamembros/:codGrupo', (req, res) =>{
+
+      connection.query("SELECT * FROM Usuarios JOIN Participacao ON Usuarios.codUser = Participacao.codUser WHERE (codGrupo = " + req.params.codGrupo  + ") AND (statusMembro!='bloqueado')", function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+          //console.log(results + 'AAAA')
+        console.log('GET solicitacoes grupos');
+        });
+
+});
+
+
+
+
+router.get('/listamembrosadm/:codGrupo', (req, res) =>{
+
+      connection.query("SELECT * FROM Usuarios JOIN Participacao ON Usuarios.codUser = Participacao.codUser WHERE (codGrupo = " + req.params.codGrupo + ") AND (statusMembro!='bloqueado') AND (statusMembro!='admin')", function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+          //console.log(results + 'AAAA')
+        console.log('GET solicitacoes grupos');
+        });
+
+});
+
+router.get('/listamembrosblock/:codGrupo', (req, res) =>{
+
+      connection.query("SELECT * FROM Usuarios JOIN Participacao ON Usuarios.codUser = Participacao.codUser WHERE (codGrupo = " + req.params.codGrupo + ") AND (statusMembro='bloqueado')", function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+          //console.log(results + 'AAAA')
+        console.log('GET solicitacoes grupos');
+        });
+
+});
+
+
+router.post('/aceitarsolicitacaogrupo', (req, res) =>{
+
+        //console.log(req.body.cod_user + ' ' + req.body.cod_grupo );
+        var sql = "UPDATE Participacao SET statusMembro='aceito' WHERE codUser=" + req.body.cod_user + " AND codGrupo=" + req.body.cod_grupo;
+        //console.log(sql);
+
+        connection.query(sql, function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+
+
+router.get('/solicitacoesgrupos', (req, res) =>{
+
+
+      connection.query("SELECT * FROM Usuarios JOIN Participacao ON Usuarios.codUser = Participacao.codUser WHERE Participacao.statusMembro='pendente'", function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+          //console.log(results + 'AAAA')
+        console.log('GET solicitacoes grupos');
+        });
+
+});
+
+router.post('/solicitarEntrada', (req, res) =>{
+
+    //console.log(req.body.cod_grupo + ' ' + req.body.idUser );
+        var status = 'pendente'
+        var values = [
+        [req.body.idUser,req.body.cod_grupo, status],
+        ];
+
+        //console.log(values)
+        var sql = "INSERT INTO Participacao (codUser, codGrupo, statusMembro) VALUES ?";
+        connection.query(sql, [values] , function (err, result,fields) {
+          if (err) throw err;
+        });
+
+});
+
+
+router.get('/gruposWHEREADMIN/:codUser', (req, res) =>{
+
+
+  //console.log(req.params.codUser)
+  filter = " WHERE (Participacao.codUser = " + req.params.codUser + ") AND (Participacao.statusMembro= 'admin')"
+ connection.query('SELECT * FROM Grupos JOIN Participacao On Grupos.codGrupo = Participacao.codGrupo' + filter, function(error, results, fields){
+      if(error) 
+        res.json(error);
+      else
+        res.json(results);
+
+      console.log('GET grupos');
+
+      });   
+});
+
+router.get('/grupos/:codUser', (req, res) =>{
+
+  //console.log(req.params.codUser)
+  filter = " WHERE (codUser != " + req.params.codUser +") NOT IN ('pendente', 'admin', 'aceito')";
+ connection.query('SELECT * FROM Grupos JOIN Participacao ON Grupos.codGrupo = Participacao.codGrupo' + filter, function(error, results, fields){
+      if(error) 
+        res.json(error);
+      else
+        res.json(results);
+
+      console.log('GET grupos');
+
+      });   
+});
+
+router.get('/grupo/:idGrupo', (req, res) =>{
+
+
+ if(req.params.idGrupo) filter = " ON Grupos.codGrupo=" + req.params.idGrupo + " AND Murais.codGrupo =" + req.params.idGrupo;
+
+
+    //if(req.params.idGrupo) filter = " WHERE Grupos.codGrupo=" + req.params.idGrupo;
+
+ connection.query('SELECT * FROM Grupos INNER JOIN Murais' + filter, function(error, results, fields){
+      if(error) 
+        res.json(error);
+      else
+        res.json(results);
+
+      console.log('GET usuarios');
+
+      });   
+});
+
+router.post('/CriarGrupo', (req, res) =>{
+        var data = new Date();
+
+        var values = [
+        [req.body.nome, req.body.descricao, req.body.url3, data],
+        ];
+
+        //console.log(values);
+        var sql = "INSERT INTO Grupos (nomeGrupo, descricaoGrupo, capaGrupo, dataGrupo) VALUES ?";
+
+        connection.query(sql, [values] , function (err, result,fields) {
+          if (err) throw err;
+          values2 = [
+          [result.insertId, req.body.idUser, 'admin'],
+          ];
+
+          var sql2 = "INSERT INTO Participacao (codGrupo, codUser, statusMembro) VALUES ?";
+            connection.query(sql2, [values2] , function (err, result,fields) {
+               if (err) throw err;
+            });
+          res.json(result.insertId);
+
+          var sqlreviewmurais = "SELECT * from Grupos WHERE codGrupo= " + result.insertId;
+
+          connection.query(sqlreviewmurais, function (err, result,fields) {
+          if (err) throw err;
+          console.log(result[0].codGrupo)
+          
+          var values = [
+          [result[0].codGrupo],
+          ];
+
+          var sqlreviewmurais2 = "INSERT INTO Murais (codGrupo) VALUES ?";        
+              connection.query(sqlreviewmurais2, [values], function (err, result,fields) {
+              if (err) throw err;
+
+            })  
+          
+         });
+
+        });
+
+       
+});
+
+router.get('/checkAdmin/:idUser/:id_grupo', (req, res) =>{
+
+       // if(req.params.codUser) filter = " AND (Amizades.codUserAmigo=" + req.params.codUser + " OR Amizades.codUser=" + req.params.codUser + ") AND (Amizades.codUserAmigo=" + req.params.id_amigo + " OR Amizades.codUser=" + req.params.id_amigo + ") AND statusAmizade='aceito'";
+      connection.query("SELECT * FROM Participacao WHERE codGrupo=" + req.params.id_grupo + " AND codUser=" + req.params.idUser + " AND statusMembro='admin'", function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+        });
+
+});
+
+router.get('/checkMembro/:idUser/:id_grupo', (req, res) =>{
+
+       // if(req.params.codUser) filter = " AND (Amizades.codUserAmigo=" + req.params.codUser + " OR Amizades.codUser=" + req.params.codUser + ") AND (Amizades.codUserAmigo=" + req.params.id_amigo + " OR Amizades.codUser=" + req.params.id_amigo + ") AND statusAmizade='aceito'";
+      connection.query("SELECT * FROM Participacao WHERE codGrupo=" + req.params.id_grupo + " AND codUser=" + req.params.idUser + " AND (statusMembro='aceito' OR statusMembro='admin')", function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+        });
+
+});
+
+
+router.get('/checkBlock/:codUser/:id_amigo', (req, res) =>{
+
+       // if(req.params.codUser) filter = " AND (Amizades.codUserAmigo=" + req.params.codUser + " OR Amizades.codUser=" + req.params.codUser + ") AND (Amizades.codUserAmigo=" + req.params.id_amigo + " OR Amizades.codUser=" + req.params.id_amigo + ") AND statusAmizade='aceito'";
+      connection.query("SELECT * FROM Bloqueios WHERE codUser=" + req.params.id_amigo + " AND codUserBloqueio=" + req.params.codUser , function(error, results, fields){
+        if(error) 
+          res.json(error);
+        else
+          res.json(results);
+        });
+
+});
+
+
+
+router.post('/Bloquear', (req, res) =>{
+
+        var values = [
+        [req.body.idUser,req.body.id_amigo],
+        ];
+        var sql = "INSERT INTO Bloqueios (codUser, codUserBloqueio) VALUES ?";
+
+        connection.query(sql, [values] , function (err, result,fields) {
+          if (err) throw err;
+        });
+
+       
+});
+
+
 router.post('/ExcluirResposta', (req, res) =>{
 
 
@@ -19,7 +308,7 @@ router.post('/ExcluirComentario', (req, res) =>{
 
 
          sql2 = "DELETE FROM Respostas WHERE codMurais=" + req.body.codMural + " AND codPostagens=" + req.body.codPostagem + " AND codComentarios=" + req.body.codComentarios;
-        console.log(sql2);
+        //console.log(sql2);
 
         connection.query(sql2, function (err, result,fields) {
           if (err) throw err;
@@ -86,8 +375,7 @@ router.get('/checkAmigo/:codUser/:id_amigo', (req, res) =>{
 
 router.get('/amigos/:codUser', (req, res) =>{
 
-        if(req.params.codUser) filter = " AND (Amizades.codUserAmigo=" + req.params.codUser + " OR Amizades.codUser=" + req.params.codUser + ")";
-      connection.query("SELECT * FROM Usuarios INNER JOIN Amizades ON Usuarios.codUser = Amizades.codUser WHERE statusAmizade='aceito'" + filter, function(error, results, fields){
+      connection.query("SELECT * FROM Amizades Join Usuarios ON Amizades.codUser = Usuarios.codUser WHERE Amizades.codUserAmigo ="+ req.params.codUser +" UNION SELECT * FROM Amizades JOIN Usuarios ON Amizades.codUserAmigo = Usuarios.codUser WHERE Amizades.codUser = "+req.params.codUser +" AND Amizades.statusAmizade = 'aceito'", function(error, results, fields){
         if(error) 
           res.json(error);
         else
@@ -243,7 +531,7 @@ router.post('/postar', (req, res) =>{
 		var data = new Date();
 		
         var values = [
-        [req.body.post,req.body.idUser, req.body.idMural, data.getDay(), req.body.select, req.body.url2],
+        [req.body.post,req.body.idUser, req.body.idMural, data.getDay(), req.body.select, req.body.url4],
         ];
         var sql = "INSERT INTO Postagens (post, codUser, codMurais, datapost, privacidade, urlimagepost) VALUES ?";
 
@@ -269,9 +557,9 @@ let filter = '';
 });});
 
 
-router.get('/usuarios', (req, res) =>{
+router.get('/todosusuarios/:idUser', (req, res) =>{
 
- connection.query('SELECT * FROM Usuarios', function(error, results, fields){
+ connection.query("SELECT * FROM Usuarios WHERE (Usuarios.codUser NOT IN (SELECT Usuarios.codUser FROM Bloqueios JOIN Usuarios ON Bloqueios.codUser = Usuarios.codUser WHERE (Bloqueios.codUserBloqueio =" + req.params.idUser +"))) AND (Usuarios.codUser !=" + req.params.idUser + ") AND (Usuarios.codUser NOT IN (SELECT Amizades.codUser FROM Amizades Join Usuarios ON Amizades.codUser = Usuarios.codUser WHERE Amizades.codUserAmigo =" + req.params.idUser + " UNION SELECT Amizades.codUserAmigo FROM Amizades JOIN Usuarios ON Amizades.codUserAmigo = Usuarios.codUser WHERE Amizades.codUser =" + req.params.idUser + " AND (Amizades.statusAmizade = 'aceito' OR Amizades.statusAmizade= 'pendente')))", function(error, results, fields){
       if(error) 
         res.json(error);
       else
@@ -296,8 +584,8 @@ router.get('/usuarios/:idUser', (req, res) =>{
 });});
 
 
-router.get('/grupos', (req, res) =>{
- connection.query('SELECT * FROM Grupos', function(error, results, fields){
+router.get('/gruposlist/:idUser', (req, res) =>{
+ connection.query("SELECT * FROM Grupos WHERE Grupos.codGrupo NOT IN (SELECT Participacao.codGrupo FROM Participacao JOIN Grupos ON Participacao.codGrupo=Grupos.codGrupo WHERE Participacao.codUser = 50 AND (statusMembro = 'bloqueado' OR statusMembro ='aceito' OR statusMembro='admin'))", function(error, results, fields){
       if(error) 
         res.json(error);
       else

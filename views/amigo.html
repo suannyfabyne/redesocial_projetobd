@@ -38,10 +38,13 @@
 <!-- ****** parte do cabeçalho ******* --> 
          <nav>
 
-             <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:#0e3a71; height:50px; width: 100%;"> </div>
+             <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:#0e3a71; height:50px; width: 100%;">
+                                        <tr><a href="/mural"  style="color: white;"><p style="margin-top: 15px;  margin-left: 500px;">Inicio</p></a>
+                           <a href="/login"  style="color: white;"><p style="margin-top: -29px;  margin-left: 550px;">Login</p></a>
+                           </tr> </div>
         
          </nav>
-
+<div ng-if="!checkBlock()">
   <div class="container">
 
 
@@ -55,6 +58,8 @@
                       <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b>Relacionamento:</b> {{amigo.relacionamentoUser}} </li>
                       <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b> Nasceu em: </b> {{amigo.nascUser}} </li>
                 </ul>
+                <button  class="btn btn-default" style="margin-top: 10px;" ng-click="Bloquear(amigo.codUser)" >Bloquear </button>
+
                 </div>
 
 
@@ -242,7 +247,7 @@
         </div>
 
   </div>
-
+</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

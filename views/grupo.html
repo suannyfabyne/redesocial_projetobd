@@ -39,9 +39,12 @@
          <nav>
 
              <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:#0e3a71; height:50px; width: 100%;"> 
-                                        <tr><a href="/mural"  style="color: white;"><p style="margin-top: 15px;  margin-left: 500px;">Inicio</p></a>
+                           <tr><a href="/mural"  style="color: white;"><p style="margin-top: 15px;  margin-left: 500px;">Inicio</p></a>
                            <a href="/login"  style="color: white;"><p style="margin-top: -29px;  margin-left: 550px;">Login</p></a>
-                           </tr></div>
+                           </tr>
+
+             </div>
+
         
          </nav>
 
@@ -51,12 +54,11 @@
 		          <div class="container">
 
 		             <div class="jumbotron" style=" border-radius: 3px; background-color: #0e3a71; opacity: 0.97; width: 230px; margin-left: -160px; margin-top: 20px; height: 450px;"> 
-		             <img src="images/{{usuario.fotoUser}}" style="width: 160%; margin-left: -30px; margin-top: -20px;" >
+		             <img src="images/{{grupo.capaGrupo}}" style="width: 160%; margin-left: -30px; margin-top: -20px;" >
 		             <ul style="list-style-type: none; width: 70px; text-align: left; margin-left: -50px;">
-		                  <li style="color: white; font-size: 11px;  font-family: Quicksand; text-align: left; width: 200px;"><h3 style="font-size: 17px;"><b>{{usuario.nomeUser}}</b></h3></li>
-		                  <li style="color: white; font-size: 12px; margin-top: 40px;  font-family: Quicksand; margin-left: -20px; width: 200px;"> <b> Mora em: </b> {{usuario.cidadeUser}} </li>
-		                  <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b>Relacionamento:</b> {{usuario.relacionamentoUser}} </li>
-		                  <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b> Nasceu em: </b> {{usuario.nascUser}} </li>
+		                  <li style="color: white; font-size: 11px;  font-family: Quicksand; text-align: left; width: 200px;"><h3 style="font-size: 17px;"><b>{{grupo.nomeGrupo}}</b></h3></li>
+		                  <li style="color: white; font-size: 12px; margin-top: 40px;  font-family: Quicksand; margin-left: -20px; width: 200px;"> <b>Descrição: </b> {{grupo.descricaoGrupo}} </li>
+		                  <li style="color: white; font-size: 12px; margin-left: -20px;  font-family: Quicksand; width: 200px;"> <b>Criado em:</b> {{grupo.dataGrupo}} </li>
 		            </ul>
 	           	  </div>
 
@@ -76,79 +78,62 @@
                       <li>  
                         <a href="/criargrupo" style="color:white;">Criar grupo</a>
                       </li>
+                      <li>  
+                        <a href="/listamembros" style="color:white;">Lista membros</a>
+                      </li>
 
-                      <li>  
-                        <a href="/listaamigos" style="color:white;">Lista amigos</a>
-                      </li>
-                      <li>  
-                        <a href="/listagrupos" style="color:white;">Entrar em grupos</a>
-                      </li>
-                      <li>  
-                        <a href="/listagruposwhereadmin" style="color:white;">Grupos (administração)</a>
-                      </li>
                     </lu>
                 </div>
-
+            
 
          			 </div>  
 
-
+       
           <div class="container">
-             <div class="jumbotron" style="  border-radius: 3px; background-color: #0e3a71; opacity: 0.97; height: 280px; width: 700px; margin-top: 20px;"> 
+
+             <div class="jumbotron" ng-if="checkMembro()" style="  border-radius: 3px; background-color: #0e3a71; opacity: 0.97; height: 280px; width: 700px; margin-top: 20px;"> 
+
              	<label style="margin-left: -310px;  font-family: Quicksand; margin-top: -50px; color: white;"><h4><i>O que você está pensando?</i></h4></label>
    				 <textarea style="margin-top: -10px;" type="text" class="form-control" rows="4" ng-model="post"> </textarea>
-           <select class="form-control" ng-model="select1" id="exampleFormControlSelect1" placeholder="privacidade" style="margin-top: 10px;">
-            <option disabled selected>Escolha a privacidade:</option>
-            <option>Público</option>
-            <option>Amigos</option>
-          </select>
 
            <form style="position: absolute; margin-top: 10px;" method="post" enctype="multipart/form-data">
          <button style="margin-left: 0px; "><label for="file" style="margin-top: 0px;  height: 10px;">  &ensp; Escolher foto &ensp; </label>
-         <input type="file" style="height: 0px;" onchange="readURL2(this);" id="file" name="file" multiple> </input></button>
+         <input type="file" style="height: 0px;" onchange="readURL4(this);" id="file" name="file" multiple> </input></button>
           </form> 
 
-   				 <button class="btn btn-default" ng-click="Postar(post, select1)" onclick="reload()" style="margin-top: 10px; margin-right: -500px;">Postar</button>
+   				 <button class="btn btn-default" ng-click="PostarGrupo(post, grupo.codMurais)" onclick="reload()" style="margin-top: 10px; margin-right: -500px;">Postar</button>
              </div>
           </div>  
             <div class="container">
 
-		        <table class="table table-bordered"  style=" table-layout: fixed; border:none; margin-top: 310px; margin-left: -740px;">
+		        <table class="table table-bordered" ng-if="checkMembro()" style=" table-layout: fixed; border:none; margin-top: 310px; margin-left: -740px;">
 		          <tbody>
-		            <tr ng-repeat="user in users" style="border:none">
+		            <tr ng-repeat="postgrupo in postsgrupos" style="border:none">
 		                <td style="text-align: center; width: 140px; border:none"> 
-                    <select class="form-control" ng-model="select" id="exampleFormControlSelect1" style="margin-bottom: -33px; margin-left: 430px;">
-                      <option disabled selected>Escolha a privacidade:</option>
-                      <option>Público</option>
-                      <option>Amigos</option>
-                    </select>
-
-
-                    <button class="btn btn-default" ng-click="MudarPrivacidade(user.codPostagens, user.codMurais, select)" onclick="reload()" style="margin-bottom: 4px; margin-left: 560px;">Mudar Privacidade</button>
 		                <div class="jumbotron" style="border: 0px solid #0e3a71; border-radius: 3px; background-color:white;opacity: 0.97;width: 700px; margin-bottom: 0px;">
 
 
 
-                      <button class="btn btn-default" ng-click="ExcluirPost(user.codPostagens, user.codMurais)" onclick="reload()" style="margin-bottom: 4px; margin-left: 480px;">Excluir</button>
+                      <button class="btn btn-default" ng-if="checkAdmin()" ng-click="ExcluirPost(postgrupo.codPostagens, postgrupo.codMurais)" onclick="reload()" style="margin-bottom: 4px; margin-left: 480px;">Excluir</button>
 
 
 		                	<div>
-				                <img src="images/{{user.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
-				                <p style="margin-top: -35px; color: #0e3a71;  font-family: Quicksand; margin-left: -280px;"><b>{{user.nomeUser}}</b></p>
+				                <img src="images/{{postgrupo.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
+				                <p style="margin-top: -35px; color: #0e3a71;  font-family: Quicksand; margin-left: -280px;"><b>{{postgrupo.nomeUser}}</b></p>
                             <hr style="height:1px; border:none; color: #0e3a71; background-color:grey; margin-top: 0px; margin-bottom: 0px;"/>
 
 				                <br>
 			                </div>
-                      <div ng-show="null !== {{user.urlimagepost}} "><img src="images/{{user.urlimagepost}}" style="width: 60%; margin-bottom: 20px; margin-left: -50px; margin-top: 0px;" ></div>
-			                <p style="text-align: justify; color: #0e3a71; font-family: Quicksand;">{{user.post}}</p>
-			                <p style="margin-bottom: -20px; position: relative; margin-left: 450px; color: #0e3a71; font-family: Quicksand;" > <b>{{user.datapost}}</b> </p>
+                      <div ng-show="null !== {{postgrupo.urlimagepost}} "><img src="images/{{postgrupo.urlimagepost}}" style="width: 60%; margin-bottom: 20px; margin-left: -50px; margin-top: 0px;" ></div>
+			                <p style="text-align: justify; color: #0e3a71; font-family: Quicksand;">{{postgrupo.post}}</p>
+			                <p style="margin-bottom: -20px; position: relative; margin-left: 450px; color: #0e3a71; font-family: Quicksand;" > <b>{{postgrupo.datapost}}</b> </p>
 							       </div> 
 
                      <div class="container">
 
                      <table class="table table-bordered"  style="margin-left: -15px; margin-top: -7px;">
 
-                       <tr ng-repeat="comentario in comentarios | filter: {codPostagens: user.codPostagens} | filter: {codMurais: user.codMurais}" ">
+                       <tr ng-repeat="comentario in comentariosgrupos | filter: {codPostagens: postgrupo.codPostagens} | filter: {codMurais: postgrupo.codMurais}" ">
 
                           <td>
                           <img src="images/{{comentario.fotoUser}}" style="width: 3%; margin-left: -530px;">
@@ -156,17 +141,17 @@
 
                           <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 220px;"><b>{{comentario.comentario}}</b></p>
 
-                      <button class="btn btn-default" ng-click="ExcluirComentario(user.codPostagens, user.codMurais, comentario.codComentarios)" onclick="reload()" style=" margin-top: -45px; margin-left: 480px;">Excluir</button>
+                      <button class="btn btn-default" ng-if="checkAdmin()" ng-click="ExcluirComentario(postgrupo.codPostagens, postgrupo.codMurais, comentario.codComentarios)" onclick="reload()" style=" margin-top: -45px; margin-left: 480px;">Excluir</button>
 
                        <table class="table table-bordered"  style="margin-top: 0px;">
-                           <tr ng-repeat="resposta in respostas | filter: {codComentarios: comentario.codComentarios} ">
+                           <tr ng-repeat="resposta in respostasgrupos | filter: {codComentarios: comentario.codComentarios} ">
                              <td>
                                 <img src="images/{{resposta.fotoUser}}" style="width: 3%; margin-left: -230px;">
                                 <p style="color: #0e3a71;  font-family: Quicksand;  margin-left: -70px; margin-top: -20px;"><b>{{resposta.nomeUser}}: </b></p>
 
                                 <p style="color: #0e3a71; text-align: left; font-family: Quicksand; margin-top: -30px;  margin-left: 360px;"><b>{{resposta.resposta}}</b></p>
 
-                                <button class="btn btn-default" ng-click="ExcluirResposta(user.codPostagens, user.codMurais, resposta.codRespostas)" onclick="reload()" style=" margin-top: -45px; margin-left: 480px;">Excluir</button>
+                                <div ng-if="checkAdmin()"><button class="btn btn-default"  ng-click="ExcluirResposta(postgrupo.codPostagens, postgrupo.codMurais, resposta.codRespostas)" onclick="reload()" style=" margin-top: -45px; margin-left: 480px;">Excluir</button></div>
 
                              </td>
                            </tr>
@@ -178,7 +163,7 @@
               
                         <div class="row" style="">
                          <div class="col-xs-6 col-md-6" style="margin-left: 220px;"> <textarea style="" type="text" class="form-control" rows="1" ng-model="resposta" style="" > </textarea> </div>
-                         <div class="col-xs-6 col-md-2" style=" margin-left: -15px;"> <button class="btn btn-default" ng-click="Responder(user.codPostagens, comentario.codComentarios, resposta, user.codUser, comentario.codUser)" onclick="reload()" style="">Responder</button> </div>
+                         <div class="col-xs-6 col-md-2" style=" margin-left: -15px;"> <button class="btn btn-default" ng-click="ResponderGrupo(postgrupo.codPostagens, comentario.codComentarios, resposta, postgrupo.codUser, comentario.codUser, grupo.codMurais)" onclick="reload()" style="">Responder</button> </div>
                         </div>
 
                           </td>
@@ -194,18 +179,19 @@
                      <div class="jumbotron" style="border: 2px solid #0e3a71; border-radius: 3px; margin-left: -15px; margin-top: -20px; height: 10px; background-color: #0e3a71;">
                      <div class="row" style="margin-top: -20px; margin-bottom: -20px;">
                          <div class="col-xs-6 col-md-10" style="width: 500px; margin-left: -12px;"> <textarea style="" type="text" class="form-control" rows="1" ng-model="coment" > </textarea> </div>
-                         <div class="col-xs-6 col-md-2" style=" margin-left: 0px;"> <button class="btn btn-default" ng-click="Comentar(user.codPostagens, coment, user.codUser)"" onclick="reload()" style="">Comentar</button> </div>
+                         <div class="col-xs-6 col-md-2" style=" margin-left: 0px;"> <button class="btn btn-default" ng-click="ComentarGrupo(postgrupo.codPostagens, coment, postgrupo.codUser, grupo.codMurais)"" onclick="reload()" style="">Comentar</button> </div>
                       </div></div> </div>
 			                </td>   
                                 
 		            </tr>
 		          </tbody>
 		        </table>
-		    </div>
 
+		    </div>
+</div>
 	</div>
 
-
+</div>
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

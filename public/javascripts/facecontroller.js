@@ -21,6 +21,310 @@ var myApp = angular.module('myFacebook',[])
           }
     }
 
+    window.readURL3 = function(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              localStorage.url3 = input.files[0].name
+              console.log(input.files[0].name);
+          }
+    }
+
+    window.readURL4 = function(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              localStorage.url4 = input.files[0].name
+              console.log(input.files[0].name);
+          }
+    }
+
+
+    $scope.Remover = function(cod_user, cod_grupo){ 
+
+        var dadosGrupo = {
+          cod_user, cod_grupo
+        };
+
+      $http.post('http://localhost:3000/endpoint/removergrupo', dadosGrupo).then(function(success) {
+
+
+      })
+
+    } 
+
+
+    $scope.TornarAdm = function(cod_user, cod_grupo){ 
+
+        var dadosGrupo = {
+          cod_user, cod_grupo
+        };
+
+      $http.post('http://localhost:3000/endpoint/tornaradmgrupo', dadosGrupo).then(function(success) {
+
+
+      })
+
+    } 
+
+    $scope.BloquearGrupo = function(cod_user, cod_grupo){ 
+
+        var dadosGrupo = {
+          cod_user, cod_grupo
+        };
+        console.log(dadosGrupo);
+
+        $http.post('http://localhost:3000/endpoint/bloqueargrupo', dadosGrupo).then(function(success) {
+
+
+        })
+
+    } 
+
+    $scope.DesbloquearGrupo = function(cod_user, cod_grupo){ 
+
+        var dadosGrupo = {
+          cod_user, cod_grupo
+        };
+        console.log(dadosGrupo);
+
+        $http.post('http://localhost:3000/endpoint/desbloqueargrupo', dadosGrupo).then(function(success) {
+
+
+        })
+
+    } 
+
+
+
+    $scope.rejeitarEntrada = function(cod_grupo, cod_user){ 
+
+        var dadosGrupo = {
+          cod_user, cod_grupo
+        };
+
+      $http.post('http://localhost:3000/endpoint/removergrupo', dadosGrupo).then(function(success) {
+
+
+      })
+
+    } 
+
+
+
+    $scope.aceitarEntrada = function(cod_grupo, cod_user){ 
+
+        var dadosGrupo = {
+          cod_user, cod_grupo
+        };
+
+      $http.post('http://localhost:3000/endpoint/aceitarsolicitacaogrupo', dadosGrupo).then(function(success) {
+
+
+      })
+
+    } 
+
+    $scope.PostarGrupo = function (post, idMural) {
+
+      console.log(idMural)
+      url4 = localStorage.url4;
+
+      var idUser = localStorage.idUser
+      var dadosPost = {
+        post, idUser, idMural, url4
+      };
+
+      console.log(dadosPost)
+        $http.post('http://localhost:3000/endpoint/postar', dadosPost).then(function(success) {
+            history.go(0);
+            console.log("Postei");
+
+        })
+        localStorage.url4 = null
+        url4 = null
+    } 
+
+  $scope.ComentarGrupo = function (idpost, comentario, codUserPostagens, idMural) {
+
+
+   var codUserComentarios = localStorage.idUser
+    var dadosComent = {
+      comentario, idpost, codUserComentarios, idMural, codUserPostagens, idMural
+    };
+
+      $http.post('http://localhost:3000/endpoint/comentar', dadosComent).then(function(success) {
+          console.log("Comentei");
+
+      })
+  }
+
+    $scope.ResponderGrupo = function (idpost, codComentarios,resposta, codUserPostagens, codUserComentarios, idMural) {
+
+    var codUserRespostas = localStorage.idUser
+    var dadosResposta = {
+      resposta, idpost, codComentarios, codUserPostagens, idMural, codUserRespostas, codUserComentarios
+    };
+
+      $http.post('http://localhost:3000/endpoint/responder', dadosResposta).then(function(success) {
+          console.log("Respondi");
+
+      })
+
+  }
+
+
+    var getSolicitacoesGrupos = function(){ 
+    $http.get('http://localhost:3000/endpoint/solicitacoesgrupos').then(function(success) {
+      if(success.data.length>0) {
+          $scope.solicitacoesgrupo = success.data;  
+        }
+      })
+    } 
+    getSolicitacoesGrupos();
+
+    var getGrupos = function(){ 
+      var idUser = localStorage.idUser
+      $http.get('http://localhost:3000/endpoint/gruposlist/' + idUser).then(function(success) {
+      if(success.data.length>0) {
+          $scope.grupos = success.data;  
+        }
+      })
+    } 
+    getGrupos();
+
+
+
+    var getGruposWhereAdmin = function(){ 
+      var idUser = localStorage.idUser
+      $http.get('http://localhost:3000/endpoint/gruposWHEREADMIN/' + idUser).then(function(success) {
+      if(success.data.length>0) {
+          $scope.gruposwhereadmin = success.data;  
+        }
+      })
+    } 
+    getGruposWhereAdmin();
+
+  $scope.solicitarEntrada = function (cod_grupo) {
+        var idUser = localStorage.idUser
+        var dadosGrupo = {
+          idUser, cod_grupo
+        };
+
+      $http.post('http://localhost:3000/endpoint/solicitarEntrada', dadosGrupo).then(function(success) {
+
+      })
+
+  }
+
+  $scope.goToGrupo = function (cod_grupo) {
+        localStorage.grupo = cod_grupo;
+        $window.location.href = '/grupo';
+  }
+
+      var ListaMembrosAdm = function(codGrupo){ 
+      var idUser = localStorage.idUser
+      $http.get('http://localhost:3000/endpoint/listamembrosadm/' + codGrupo).then(function(success) {
+      if(success.data.length>0) {
+          $scope.listamembrosadm = success.data;  
+        }
+      })
+    } 
+    ListaMembrosAdm(localStorage.grupo);
+
+      var ListaMembros = function(codGrupo){ 
+      var idUser = localStorage.idUser
+      $http.get('http://localhost:3000/endpoint/listamembros/' + codGrupo).then(function(success) {
+      if(success.data.length>0) {
+          $scope.listamembros = success.data;  
+        }
+      })
+    } 
+    ListaMembros(localStorage.grupo);
+
+      var ListaMembrosBlock = function(codGrupo){ 
+      var idUser = localStorage.idUser
+      $http.get('http://localhost:3000/endpoint/listamembrosblock/' + codGrupo).then(function(success) {
+      if(success.data.length>0) {
+          $scope.listamembrosblock = success.data;  
+        }
+      })
+    } 
+    ListaMembrosBlock(localStorage.grupo);
+
+ $scope.CriarGrupo = function (nome, descricao) {
+
+    var idUser = localStorage.idUser
+    var url3 = localStorage.url3;
+    var dadosGrupo = {
+      nome, descricao, url3, idUser
+    };
+    console.log(dadosGrupo)
+
+      $http.post('http://localhost:3000/endpoint/CriarGrupo', dadosGrupo).then(function(success) {
+          localStorage.grupo = success.data;
+          $window.location.href = '/grupo';
+
+      })
+  }
+
+    var getPostsGrupo = function(codMurais){ 
+
+        $http.get('http://localhost:3000/endpoint/posts/' + codMurais).then(function(success) {
+          if(success.data.length>0) {
+            $scope.postsgrupos = success.data;
+            ComentariosGrupo(codMurais);
+
+          }
+        })
+      } 
+
+
+   var ComentariosGrupo = function (codMurais) {
+
+          $http.get('http://localhost:3000/endpoint/comentarios/' + codMurais).then(function(success) {
+            console.log(codMurais + 'codmurais')
+            if(success.data.length>0) {
+              $scope.comentariosgrupos = success.data;
+                RespostasGrupo(codMurais);
+
+            }
+          })
+    }
+
+ var RespostasGrupo = function (codMurais) {
+
+        $http.get('http://localhost:3000/endpoint/respostas/' + codMurais).then(function(success) {
+          console.log(codMurais + 'codmurais')
+          if(success.data.length>0) {
+            $scope.respostasgrupos = success.data;
+          }
+        })
+  }
+
+   var GetGrupo = function (id_grupo) {
+
+    console.log(id_grupo + ' IDGRUPO');
+
+      $http.get('http://localhost:3000/endpoint/grupo/' + id_grupo).then(function(success) {
+        $scope.grupo = success.data[0];
+        console.log(success.data[0])
+        getPostsGrupo(success.data[0].codMurais)
+
+      })
+  }
+  GetGrupo(localStorage.grupo);
+
+ $scope.Bloquear = function (id_amigo) {
+
+    var idUser = localStorage.idUser
+    var dadosBloqueio = {
+      idUser, id_amigo
+    };
+    console.log(dadosBloqueio)
+
+      $http.post('http://localhost:3000/endpoint/Bloquear', dadosBloqueio).then(function(success) {
+
+      })
+  }
 
  $scope.ExcluirPost = function (codPostagem, codMural) {
 
@@ -94,8 +398,98 @@ var CheckAmigo = function (id_amigo) {
   }
 CheckAmigo(localStorage.id_amigo);
 
+
+
+var CheckBlock = function (id_amigo) {
+
+        var idUser = localStorage.idUser;
+        $http.get('http://localhost:3000/endpoint/CheckBlock/' + idUser + '/' + id_amigo).then(function(success) {
+          if(success.data == '') {
+            $scope.seblock = 0;
+            localStorage.seblock = $scope.seblock;
+                      console.log(localStorage.seblock);
+
+
+          }
+          else { $scope.seblock = 1;
+            localStorage.seblock = $scope.seblock;
+                      console.log(localStorage.seblock);
+
+          }
+
+
+        })
+
+  }
+CheckBlock(localStorage.id_amigo);
+
+
+var CheckMembro = function (id_grupo) {
+
+        var idUser = localStorage.idUser;
+        $http.get('http://localhost:3000/endpoint/CheckMembro/' + idUser + '/' + id_grupo).then(function(success) {
+          if(success.data == '') {
+            $scope.semembro = 0;
+            localStorage.semembro = $scope.semembro;
+                      console.log(localStorage.semembro + "nao membro");
+
+
+          }
+          else { $scope.semembro = 1;
+            localStorage.semembro = $scope.semembro;
+                      console.log(localStorage.semembro + "membro");
+
+          }
+
+
+        })
+
+  }
+  CheckMembro(localStorage.grupo);
+
+var CheckAdmin = function (id_grupo) {
+
+        var idUser = localStorage.idUser;
+        $http.get('http://localhost:3000/endpoint/checkAdmin/' + idUser + '/' + id_grupo).then(function(success) {
+          if(success.data == '') {
+            $scope.seadmin = 0;
+            localStorage.seadmin = $scope.seadmin;
+                      console.log(localStorage.seadmin + "nao admin");
+
+
+          }
+          else { $scope.seadmin = 1;
+            localStorage.seadmin = $scope.seadmin;
+            console.log(localStorage.seadmin+ "admin");
+
+          }
+
+
+        })
+
+  }
+  CheckAdmin(localStorage.grupo);
+
+$scope.checkAdmin = function () {
+        if(localStorage.seadmin == 1) return 1
+        else {return 0}
+
+}
+
+$scope.checkMembro = function () {
+        if(localStorage.semembro == 1) return 1
+        else {return 0}
+
+}
+
 $scope.checkAmigo = function () {
         if(localStorage.seamigo == 1) return 1
+        else {return 0}
+
+}
+
+$scope.checkBlock = function () {
+        if(localStorage.seblock == 1) return 1
         else {return 0}
 
 }
@@ -407,14 +801,15 @@ var SolicitacaoBYME = function (codUser) {
   }
 
 
-      var getUsuarios = function(){ 
-        $http.get('http://localhost:3000/endpoint/usuarios').then(function(success) {
+      var getUsuarios = function(idUser){ 
+
+        $http.get('http://localhost:3000/endpoint/todosusuarios/' + idUser).then(function(success) {
           if(success.data.length>0) {
             $scope.usuarios = success.data;  
           }
         })
       } 
-      getUsuarios();
+      getUsuarios(localStorage.idUser);
 
 
       var getUsuario = function(idUser){ 

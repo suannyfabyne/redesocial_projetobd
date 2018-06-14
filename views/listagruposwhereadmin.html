@@ -46,29 +46,48 @@
 
 
  
+
+  <div class="container">
+
+
+ 
           <div class="container">
 
             <table class="table table-bordered"  style=" table-layout: fixed; border:none; margin-top: 40px;">
               <tbody>
-                <tr ng-repeat="amigo in amigos" style="border:none">
+                <tr ng-repeat="grupo in gruposwhereadmin" style="border:none">
                     <td style="text-align: center; width: 140px; border:none"> 
                     <div class="jumbotron" style="background-color: #9bb4c1; width: 700px; margin-top: -10px; height: 120px;">
                       <div>
-                        <img src="images/{{amigo.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
-                          <p style="margin-top: -35px; margin-left: -290px; "> <button style="background-color: #9bb4c1; border-style: none;" ng-click="goToPerfil(amigo.codUser)">{{amigo.nomeUser}} </button></p>
+                        <img src="images/{{grupo.capaGrupo}}" style="width: 7%; margin-left: -530px; margin-top: -20px;" >
+                          <p style="margin-top: -35px; margin-left: -290px; "> <button style="background-color: #9bb4c1; border-style: none;" ng-click="goToGrupo(grupo.codGrupo)"> {{grupo.nomeGrupo}} </button></p>
 
-                           <button  ng-click="Solicitar(usuario.codUser)" style="width: 160px; height: 40px; margin-top: -70px; margin-left: 390px;" class="btn"><p style="font-size: 18px;">Amigos </p></button>
-
-
-                            
                         <br>
                       </div>
                       </div> 
+                       <table class="table table-bordered"  style="margin-top: 10px; margin-left: 20px;">
+                            <tr ng-repeat="solicitacao in solicitacoesgrupo | filter: {codGrupo: grupo.codGrupo} " >
+                              <td style="height: 70px; width: 330px; margin-left: -20px;">
+
+                              <img src="images/{{solicitacao.fotoUser}}" style="width: 7%; margin-left: -530px; margin-top: 5px;" >
+                                <p style="margin-top: -35px; margin-left: -290px; "> <button style="background-color: white; border-style: none;" ng-click="goToPerfil(solicitacao.codUser)"> {{solicitacao.nomeUser}} </button></p>
+                                </div>
+
+
+                           <button  ng-click="rejeitarEntrada(grupo.codGrupo, solicitacao.codUser)" onclick="reload()" style="width: 160px; height: 40px; margin-top: -50px; margin-left: 50px;" class="btn"><p style="font-size: 18px;">Rejeitar entrada </p></button>
+                           <button  ng-click="aceitarEntrada(grupo.codGrupo, solicitacao.codUser)" onclick="reload()" style="width: 160px; height: 40px; margin-top: -90px; margin-left: 390px;" class="btn"><p style="font-size: 18px;">Aceitar entrada </p></button>
+                              </td>
+                            </tr>
+                            </table>
                       </td>
+
+
                 </tr>
               </tbody>
             </table>
         </div>
+
+  </div>
 
   </div>
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="myFacebook">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+	  <script type="text/javascript" src="/javascripts/angular.min.js"></script>
+  		<script src="/javascripts/facecontroller.js"></script>
+
+	<script type="text/javascript">
+
+
+
+
+	</script>
+    <title>Facebook-entre ou cadastre-se</title>
+    <link rel="icon" href="images/facebook-icone.png">
+
+
+    <!-- Bootstrap -->   
+        <link rel="icon" href="images/facebook-icone.png">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+
+  <body style="background-color:#e9ebee" ng-controller="MyCtrlFacebook">
+<!-- ****** parte do cabeçalho ******* --> 
+    
+         <nav>
+
+          <div class="col-xs-6 col-sm-10 col-md-6 marcador" style="background-color:rgb(61,91,153); height:90px" style=" margin-left: 100px; margin-top: 100px;"> 
+        </div>
+
+        <!-- lado esqerdo da parte de cima -->
+             <div class="col-xs-6 col-sm-2 col-md-6 marcador2" style="background-color:rgb(61,91,153); height:90px;">
+
+
+         
+    <!-- formulario para criar nova conta --> 
+    <form style="margin-left: -130px; width:90%; margin-top: 100px;"> 
+          <table >  
+
+          <tr> 
+            <td style="padding:5px;"> <input ng-model="grupo.nome" type="text" placeholder="Nome" class="form-control"> </td>
+
+
+          </tr>
+
+          <tr>
+               <td  style="padding:5px;" colspan="2"> <input  ng-model="grupo.descricao" placeholder="Descrição" class="form-control"></td>
+          </tr>
+              
+
+            <tr> 
+            <td>
+            <form style="position: absolute; margin-top: 20px;" method="post" enctype="multipart/form-data">
+			   <button style="margin-left: 5px; margin-top: 20px;"><label for="file" style="margin-top: 0px;  height: 10px;">  &ensp; &ensp; &ensp; Escolha sua capa &ensp; &ensp; &ensp; &ensp; </label>
+			   <input type="file" style="height: 0px;" onchange="readURL3(this);" id="file" name="file" multiple> </input></button>
+			</form> 
+			</td>
+			</tr>
+          </tr>
+          <tr> 
+          	<td>
+            <button type="submit" style="margin-top: 20px; width: 100%" ng-click="CriarGrupo(grupo.nome, grupo.descricao)" class="btn btn-success btn-lg">Criar grupo</button>
+          </td>
+        </tr>
+        </form> <!-- fim da criação de conta -->
+
+</body
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->  </body>
+</html>
